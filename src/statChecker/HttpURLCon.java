@@ -230,7 +230,7 @@ public class HttpURLCon {
 				System.out.println(m.get(array[i]));		
 			}
 			System.out.println(c.rankedSoloWinRate(((Summoner)m.get("OG Simba")).getId()));
-			System.out.println(c.fetchChampions());
+			System.out.println(c.fetchChampions() + "\n" + c.fetchChampions().size());
 		} catch (Exception e) {
 		}
 	}

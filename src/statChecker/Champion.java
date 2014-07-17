@@ -27,7 +27,6 @@ public class Champion implements Comparator{
 		return result;
 	}
 
-	@Override
 	public int compare(Object o1, Object o2) {
 		Champion c1, c2;
 		c1 = (Champion)o1;
