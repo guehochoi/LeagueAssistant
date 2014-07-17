@@ -210,12 +210,10 @@ public class HttpURLCon {
 					Object next = itr.next();
 					JSONObject jo = data.getJSONObject(next.toString());
 					map.put(jo.getInt("id"), new Champion(jo.getInt("id"), jo.getString("name")));
-					
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			System.out.println(map);
 		}catch(IOException ex) {
 		}
 		
@@ -232,7 +230,7 @@ public class HttpURLCon {
 				System.out.println(m.get(array[i]));		
 			}
 			System.out.println(c.rankedSoloWinRate(((Summoner)m.get("OG Simba")).getId()));
-			c.fetchChampions();
+			System.out.println(c.fetchChampions());
 		} catch (Exception e) {
 		}
 	}
