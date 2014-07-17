@@ -156,12 +156,10 @@ public class HttpURLCon {
 					Object next = itr.next();
 					JSONObject jo = data.getJSONObject(next.toString());
 					map.put(jo.getInt("id"), new Champion(jo.getInt("id"), jo.getString("name")));
-					
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			System.out.println(map);
 		}catch(IOException ex) {
 		}
 		
@@ -178,7 +176,7 @@ public class HttpURLCon {
 			for (int i=0; i< array.length; i++) {
 				System.out.println(m.get(array[i]));		
 			}
-			c.fetchChampions();
+			System.out.println(c.fetchChampions());
 		} catch (Exception e) {
 		}
 	}
