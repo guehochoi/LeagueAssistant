@@ -108,6 +108,56 @@ public class HttpURLCon {
 		return sb.toString();
 	}
 	
+	public String rankedSoloWinRate(int summonerID) {
+		String url = "https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/"
+				+ summonerID +"/summary?season=SEASON4&api_key=18f24615-d0f4-4b80-aad8-30057d97d433";
+		StringBuffer response = null;
+		try {
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			// optional default is GET
+			con.setRequestMethod("GET");
+			//add request header
+			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Content-Type", "application/json");
+			
+			int responseCode = con.getResponseCode();
+			// fetch the network buffer
+			BufferedReader in = new BufferedReader(
+			        new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			response = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String resStr = response.toString();
+		int wins = 0;
+		int losses = 0;
+		
+		try {
+			JSONObject root = new JSONObject(resStr);
+			JSONArray statSummary = root.getJSONArray("playerStatSummaries");
+			for (int i=0; i < statSummary.length(); i++) {
+				if (statSummary.getJSONObject(i).getString("playerStatSummaryType").contains("RankedSolo5x5")) {
+					wins = statSummary.getJSONObject(i).getInt("wins");
+					losses = statSummary.getJSONObject(i).getInt("losses");
+					break;
+				}
+			}
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		System.out.println(wins + ", " + wins+losses);
+		double rate = wins/((float)(wins+losses)) * 100;
+		rate = (float)((int)(Math.round(rate) * 100)/100);
+		return "Rate: " + rate + ", total: " + (wins+losses);
+	}
+	
 	public static void main(String[] args) {
 		HttpURLCon c = new HttpURLCon();
 		try {
@@ -116,6 +166,8 @@ public class HttpURLCon {
 			for (int i=0; i< array.length; i++) {
 				System.out.println(m.get(array[i]));
 			}
+			System.out.println(c.rankedSoloWinRate(((Summoner)m.get("OG Simba")).getId()));
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
